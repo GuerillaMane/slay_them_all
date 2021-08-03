@@ -60,6 +60,7 @@ const logic = Vue.createApp({
             this.currentRound = 0;
             this.playerHealth = this.opponentHealth = 100;
             this.gameResult = null;
+            this.battleLog = [];
         },
         // TODO: Create logic to block actions if gameResult is truthy or I can leave v-if(else)='gameResult' in HTML!
         // blockActions() {},
@@ -67,26 +68,38 @@ const logic = Vue.createApp({
             this.currentRound++;
             let damage = randValue(5, 12);
             this.opponentHealth -= damage;
+            this.logMessage('player', 'attack', damage);
             this.attackPlayer();
         },
         attackPlayer() {
             let damage = randValue(8, 15);
             this.playerHealth -= damage;
+            this.logMessage('opponent', 'attack', damage);
         },
         specialAttack() {
             this.currentRound++;
             let damage = randValue(10, 25);
             this.opponentHealth -= damage;
+            this.logMessage('player', 'heavy attack', damage);
             this.attackPlayer();
         },
         heal() {
             this.currentRound++;
             let healValue = randValue(8, 20);
             this.playerHealth += healValue;
+            this.logMessage('player', 'heal', healValue);
             this.attackPlayer();
         },
         surrender() {
             this.gameResult = "You Lost!";
+            this.logMessage('player', ' surrendered');
+        },
+        logMessage(hero, action, value) {
+            this.battleLog.unshift({
+                actionBy: hero,
+                actionType: action,
+                actionValue: value
+            });
         }
     }
 });

@@ -54,7 +54,23 @@
             <p v-if="battleLog.length === 0">There are no logs!
                 <br><br>
                 <span class="text--red">START A FIGHT!</span></p>
-            <ul v-show="battleLog"></ul>
+            <ul v-show="battleLog">
+                <li v-for="log in battleLog" :key="log">
+                    <span :class="{'log--player': log.actionBy === 'player',
+                                   'log--opponent': log.actionBy === 'opponent'}">
+                        {{ log.actionBy === 'player' ? 'Player' : 'Opponent' }}
+                    </span>
+                    <span v-if="log.actionType === 'heal'"> heals himself for
+                        <span class="log--heal">{{ log.actionValue }}</span>
+                    </span>
+                    <span v-else-if="log.actionType === 'surrender'">
+                         surrendered!
+                    </span>
+                    <span v-else>
+                        attacks and deals <span class="log--damage">{{ log.actionValue }}</span>
+                    </span>
+                </li>
+            </ul>
         </section>
     </div>
 </body>
