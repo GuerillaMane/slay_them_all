@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Palette+Mosaic&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/vue@next" defer></script>
+    <script src="logic.js" defer></script>
+    <title>Slay Them All!</title>
+</head>
+<body>
+    <header>
+        <h1>Slay Them All</h1>
+    </header>
+
+    <div id="game">
+        <h2 style="text-align: center">Current round: {{ currentRound }}</h2>
+        <div class="container--col">
+            <section id="player" class="container">
+                <h2>Your Health</h2>
+                <div class="healthbar">
+                    <div class="healthbar__value" :style="playerBar"></div>
+                </div>
+                <img class="img--hero" src="images/samurai.png" alt="Your Hero">
+            </section>
+
+            <section id="opponent" class="container">
+                <h2>Opponent Health</h2>
+                <div class="healthbar">
+                    <div class="healthbar__value" :style="opponentBar"></div>
+                </div>
+                <img class="img--hero" src="images/samurai_opp.png" alt="Opponent's Hero">
+            </section>
+        </div>
+
+        <section v-if="gameResult" class="container">
+            <h2>Game Over!</h2>
+            <h3>{{ gameResult }}</h3>
+            <button @click="restart">Start a New Game!</button>
+        </section>
+
+        <section v-else id="controls">
+            <button @click="defaultAttack">ATTACK</button>
+            <button @click="specialAttack" :disabled="mayUseSpecial">SPECIAL ATTACK</button>
+            <button @click="heal">HEAL</button>
+            <button @click="surrender">SURRENDER</button>
+        </section>
+        <section id="log" class="container">
+            <h2>Battle Log</h2>
+            <hr>
+            <p v-if="battleLog.length === 0">There are no logs!
+                <br><br>
+                <span class="text--red">START A FIGHT!</span></p>
+            <ul v-show="battleLog"></ul>
+        </section>
+    </div>
+</body>
+</html>
